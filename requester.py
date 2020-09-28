@@ -111,49 +111,49 @@ class requester(object):
             cookies['_gcl_au'] = '1.1.19442024.1598660729'
             cookies['_px_f394gi7Fvmc43dfg_user_id'] = 'MjU1M2ZhZjAtZTk4ZS0xMWVhLWEyMzEtZWZiMzM3N2IwNzcz'
             cookies['user'] = '%7B%22zipPrompt%22%3Atrue%2C%22guest%22%3Atrue%2C%22backendId%22%3A%223061804609%22%2C%22authToken1%22%3A%22179766766015%3DmHk_r2fAog1ZnKb8QUJJcw%3DJ28MVlCPfhZcaGSJOMZHJ8U6Gu0%3D%22%2C%22authToken2%22%3A%22Guest%22%2C%22WCToken%22%3A%223061804609%252CG3Lzg%252Ftw7C3%252BaPowOUre%252FO66unHOLS6UN86XN%252B%252BKtKTn9xoEQgP3bk5DveFHO%252FZQvGzVxH2eQHatysH4SFo%252FYHm21Y3GF30VXUK3QTBQmdFSiU939Jz5N%252BQdVikSmEBNO%252Fl48ogO5abzlrurUYqQsgJT1ezWCe51%252BB3EejntFK8Snir%252FzdyFO7qf0b%252B%252BNaEN84XVMYIRRFwYzaIAgDh41Q%253D%253D%22%2C%22WCTrustedToken%22%3A%223061804609%252CYB7LIZ8ZbEmGsb8VQ6wSARa%252FgGs%253D%22%2C%22personalizationID%22%3A%221599087885096-6482%22%2C%22activityId%22%3A%22179766766015%22%2C%22isGuest%22%3Atrue%2C%22accessTokenClaims%22%3A%22%22%2C%22SSOToken%22%3A%22Guest%22%2C%22storeNumber%22%3A%221034%22%2C%22segment%22%3Anull%2C%22hasReloadedPage%22%3Afalse%7D'
-            #try:
-            r = self.client.get(link, headers=self.headers, proxies=proxy, cookies=cookies)
-            if r.status_code == 200:
-                print('Getting Data from ' + link)
-                productData = json.loads(r.text)
-                product = link.split('/')[4]
-                store = link.split('/')[6]
-                pricing = productData['productDetails'][product]['price']
-                title = productData['productDetails'][product]['product']['title']
-                url = 'https://www.lowes.com' + productData['productDetails'][product]['product']['pdURL']
-                if pricing != None:
-                    price = pricing['itemPrice']
-                    wasPrice = pricing['wasPrice']
-                    availabilityQuantity = productData['inventory']['totalAvailableQty']
-                    connection = True
-                    #self.writeToCsv(product, wasPrice, price, availabilityQuantity, store, url, title)
-                elif pricing == None:
-                    price = '0'
-                    availabilityQuantity = '0'
-                    wasPrice = '0'
-                    connection = True
-                    ##try:
-                    #    url = 'https://www.lowes.com/pd/checkotherstores/{}?itemNumber={}&modelId={}&vendorNumber={}'.format(store,productData['productDetails'][product]['product']['itemNumber'], productData['productDetails'][product]['product']['modelId'], productData['productDetails'][product]['product']['vendorNumber'] )
-                    #    print('Check {}'.format(url))
-                    #    s = self.client.get(url, headers=self.headers, proxies=proxy, cookies=cookies)
-                    #    if s.status_code == 200:
-                    #        storeData = json.loads(s.text)
-                    #        print(storeData)
-                    #        availabilityQuantity = storeData['stores'][0]['inventory']['availableQuantity']
-                    #    if availabilityQuantity == 0:
-                    #        price = '0'
-                    #        availabilityQuantity = '0'
-                    #        wasPrice='0'
-                    #        connection = True
-                    #except:
-                    #    print("Couldn't Get Price, Retrying")
-                with open('productData.csv', 'a') as p:
-                    p.write('{}||{}|{}|||{}|{}|{}|{} \n'.format(product, wasPrice, price, availabilityQuantity, store, url, title))
-                    p.close()
-            else:
-                print(str(r.status_code) + ' - Request Error Retrying...')
-            #except:
-            #    print('Having An Issue With The Proxy, Retrying...')
-            #    sleepTime = random.randint(0, 2)
-            #    print('Sleeping for ', sleepTime)
-            #    time.sleep(sleepTime)
+            try:
+                r = self.client.get(link, headers=self.headers, proxies=proxy, cookies=cookies)
+                if r.status_code == 200:
+                    print('Getting Data from ' + link)
+                    productData = json.loads(r.text)
+                    product = link.split('/')[4]
+                    store = link.split('/')[6]
+                    pricing = productData['productDetails'][product]['price']
+                    title = productData['productDetails'][product]['product']['title']
+                    url = 'https://www.lowes.com' + productData['productDetails'][product]['product']['pdURL']
+                    if pricing != None:
+                        price = pricing['itemPrice']
+                        wasPrice = pricing['wasPrice']
+                        availabilityQuantity = productData['inventory']['totalAvailableQty']
+                        connection = True
+                        #self.writeToCsv(product, wasPrice, price, availabilityQuantity, store, url, title)
+                    elif pricing == None:
+                        price = '0'
+                        availabilityQuantity = '0'
+                        wasPrice = '0'
+                        connection = True
+                        ##try:
+                        #    url = 'https://www.lowes.com/pd/checkotherstores/{}?itemNumber={}&modelId={}&vendorNumber={}'.format(store,productData['productDetails'][product]['product']['itemNumber'], productData['productDetails'][product]['product']['modelId'], productData['productDetails'][product]['product']['vendorNumber'] )
+                        #    print('Check {}'.format(url))
+                        #    s = self.client.get(url, headers=self.headers, proxies=proxy, cookies=cookies)
+                        #    if s.status_code == 200:
+                        #        storeData = json.loads(s.text)
+                        #        print(storeData)
+                        #        availabilityQuantity = storeData['stores'][0]['inventory']['availableQuantity']
+                        #    if availabilityQuantity == 0:
+                        #        price = '0'
+                        #        availabilityQuantity = '0'
+                        #        wasPrice='0'
+                        #        connection = True
+                        #except:
+                        #    print("Couldn't Get Price, Retrying")
+                    with open('productData.csv', 'a') as p:
+                        p.write('{}||{}|{}|||{}|{}|{}|{} \n'.format(product, wasPrice, price, availabilityQuantity, store, url, title))
+                        p.close()
+                else:
+                    print(str(r.status_code) + ' - Request Error Retrying...')
+            except:
+                print('Having An Issue With The Proxy, Retrying...')
+                sleepTime = random.randint(0, 2)
+                print('Sleeping for ', sleepTime)
+                time.sleep(sleepTime)
