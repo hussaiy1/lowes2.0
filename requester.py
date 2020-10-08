@@ -126,27 +126,12 @@ class requester(object):
                         wasPrice = pricing['wasPrice']
                         availabilityQuantity = productData['inventory']['totalAvailableQty']
                         connection = True
-                        #self.writeToCsv(product, wasPrice, price, availabilityQuantity, store, url, title)
                     elif pricing == None:
                         price = '0'
                         availabilityQuantity = '0'
                         wasPrice = '0'
                         connection = True
-                        ##try:
-                        #    url = 'https://www.lowes.com/pd/checkotherstores/{}?itemNumber={}&modelId={}&vendorNumber={}'.format(store,productData['productDetails'][product]['product']['itemNumber'], productData['productDetails'][product]['product']['modelId'], productData['productDetails'][product]['product']['vendorNumber'] )
-                        #    print('Check {}'.format(url))
-                        #    s = self.client.get(url, headers=self.headers, proxies=proxy, cookies=cookies)
-                        #    if s.status_code == 200:
-                        #        storeData = json.loads(s.text)
-                        #        print(storeData)
-                        #        availabilityQuantity = storeData['stores'][0]['inventory']['availableQuantity']
-                        #    if availabilityQuantity == 0:
-                        #        price = '0'
-                        #        availabilityQuantity = '0'
-                        #        wasPrice='0'
-                        #        connection = True
-                        #except:
-                        #    print("Couldn't Get Price, Retrying")
+                    print('Writing to csv')
                     with open('productData.csv', 'a') as p:
                         p.write('{}||{}|{}|||{}|{}|{}|{} \n'.format(product, wasPrice, price, availabilityQuantity, store, url, title))
                         p.close()
